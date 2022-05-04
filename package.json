@@ -8,7 +8,7 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "prettier": "npx prettier --write src/**/*.js",
+    "prettier": "npx prettier --write lib/**/*.js",
     "postversion": "git push && git push --tags && npm publish",
     "version": "npm run prettier"
   }
