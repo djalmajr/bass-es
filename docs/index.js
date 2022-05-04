@@ -7,7 +7,7 @@ const create = (tag, options = {}) => {
 const rx = /^(m|v)-/i;
 
 const dirs = {
-  m: 'https://cdn.jsdelivr.net/npm/@djalmajr/min-ce/lib',
+  m: 'https://cdn.jsdelivr.net/npm/@djalmajr/min-ce@0.2/lib',
   v: './app/views',
 };
 
