@@ -1,5 +1,5 @@
 {
-  "name": "min-ce",
+  "name": "@djalmajr/min-ce",
   "version": "0.1.0",
   "type": "module",
   "prettier": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prettier": "npx prettier --write lib/**/*.js",
-    "postversion": "git push && git push --tags && npm publish",
+    "postversion": "git push && git push --tags && npm publish --access=public",
     "version": "npm run prettier"
   }
 }
