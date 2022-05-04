@@ -1,0 +1,8 @@
+{
+  "include": ["lib"],
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "target": "es2017"
+  }
+}

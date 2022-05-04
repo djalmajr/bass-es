@@ -1,0 +1,176 @@
+:root {
+  /********************************************************
+   * COLORS
+   ********************************************************/
+
+  --m-color-primary: #0f7bc2;
+  --m-color-primary-alt: #0a588b;
+  --m-color-primary-light: #45a3e6;
+  --m-color-primary-lighter: #8ac7fc;
+  --m-color-primary-lighteralt: #cfe9ff;
+  --m-color-primary-dark: #063f65;
+  --m-color-primary-darker: #05304d;
+  --m-color-primary-darkalt: #084b77;
+
+  --m-color-info: #0f7bc2;
+  --m-color-danger: #eb0000;
+  --m-color-danger-dark: #b30000;
+  --m-color-success: #008a00;
+  --m-color-warning: #c88800;
+
+  --m-color-gray: #9e9e9e;
+  --m-color-gray-alt: #aaa;
+  --m-color-gray-darkest: #212121;
+  --m-color-gray-darker: #424242;
+  --m-color-gray-dark: #616161;
+  --m-color-gray-light: #e0e0e0;
+  --m-color-gray-lighter: #f5f5f5;
+  --m-color-gray-lightest: #fafafa;
+
+  --m-color-text: #424242;
+  --m-color-text-alt: #333;
+  --m-color-text-darker: #141414;
+  --m-color-text-dark: #2b2b2b;
+  --m-color-text-light: #acacac;
+  --m-color-text-lighter: #c4c4c4;
+
+  --m-color-overlay: rgba(0, 0, 0, 0.75);
+
+  /* Backgrounds and dividers */
+
+  --m-color-background: #f7f7f7;
+  --m-color-background-alt: #f5f5f5;
+  --m-color-background-darker: #5e5e5e;
+  --m-color-background-dark: #919191;
+  --m-color-background-light: #dedede;
+  --m-color-background-lighter: #f1f1f1;
+
+  --m-color-border: #e7e7e7;
+  --m-color-border-alt: #ddd;
+  --m-color-border-darkest: #999;
+  --m-color-border-darker: #bbb;
+  --m-color-border-dark: #ccc;
+  --m-color-border-light: #eee;
+  --m-color-border-lighter: #f0f0f0;
+
+  /********************************************************
+   * SPACING
+   ********************************************************/
+
+  --m-spacing-tiny: 0.125rem;
+  --m-spacing-mini: 0.25rem;
+  --m-spacing-small: 0.5rem;
+  --m-spacing-medium: 0.75rem;
+  --m-spacing-large: 1.25rem;
+  --m-spacing-big: 1.5rem;
+  --m-spacing-huge: 2rem;
+  --m-spacing-jumbo: 3rem;
+  --m-spacing-giant: 4rem;
+
+  /********************************************************
+   * FONT
+   ********************************************************/
+
+  --m-font-tiny: 0.675rem;
+  --m-font-mini: 0.75rem;
+  --m-font-small: 0.875rem;
+  --m-font-medium: 1rem;
+  --m-font-large: 1.25rem;
+  --m-font-big: 1.5rem;
+  --m-font-huge: 2rem;
+  --m-font-jumbo: 2.5rem;
+  --m-font-giant: 3rem;
+
+  --m-line-tiny: 0.675rem;
+  --m-line-mini: 0.75rem;
+  --m-line-small: 1rem;
+  --m-line-medium: 1.125rem;
+  --m-line-large: 1.5rem;
+  --m-line-big: 1.875rem;
+  --m-line-huge: 2.25rem;
+  --m-line-jumbo: 2.675rem;
+  --m-line-giant: 3rem;
+
+  /********************************************************
+   * GENERAL
+   ********************************************************/
+
+  --m-animation-duration: 350ms;
+
+  --m-radius-small: 0.2rem;
+  --m-radius-medium: 0.4rem;
+
+  --m-zindex-0: 1;
+  --m-zindex-1: 100;
+  --m-zindex-2: 200;
+  --m-zindex-3: 300;
+  --m-zindex-4: 400;
+  --m-zindex-5: 500;
+  --m-zindex-6: 600;
+  --m-zindex-7: 700;
+  --m-zindex-8: 800;
+  --m-zindex-9: 900;
+
+  /********************************************************
+   * ALERT
+   ********************************************************/
+
+  --m-alert-background: white;
+  --m-alert-box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.3);
+  --m-alert-padding: var(--m-spacing-small);
+
+  /********************************************************
+   * DIALOG
+   ********************************************************/
+
+  --m-dialog-background: white;
+  --m-dialog-box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.3);
+  --m-dialog-padding: var(--m-spacing-small);
+  --m-dialog-content-overflow: auto;
+
+  /********************************************************
+   * ICON
+   ********************************************************/
+
+  --m-icon-medium: 1rem;
+  --m-icon-large: 1.5rem;
+  --m-icon-big: 2.25rem;
+  --m-icon-huge: 3.5rem;
+  --m-icon-jumbo: 4.75rem;
+  --m-icon-giant: 6rem;
+
+  /********************************************************
+   * POPOVER
+   ********************************************************/
+
+  --m-popover-arrow-size: var(--m-spacing-mini);
+  --m-popover-background: white;
+  --m-popover-border-color: var(--m-color-border-light);
+  --m-popover-border-size: 1px;
+  --m-popover-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
+  --m-popover-padding: var(--m-spacing-mini);
+
+  /********************************************************
+   * TABLE
+   ********************************************************/
+
+  --m-table-border-color: #eaebf0;
+
+  /********************************************************
+   * TABS
+   ********************************************************/
+
+  --m-tabs-color: 0;
+  --m-tabs-tab-padding: 0 var(--m-spacing-mini);
+  --m-tabs-tab-background: #fff;
+  --m-tabs-tab-background-selected: #f7f7f7;
+
+  /********************************************************
+   * TOOLTIP
+   ********************************************************/
+
+  --m-tooltip-arrow-size: var(--m-radius-medium);
+  --m-tooltip-background: var(--m-color-border-dark);
+  --m-tooltip-max-width: 320px;
+  --m-tooltip-padding: 0.3rem 0.6rem;
+}

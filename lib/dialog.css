@@ -1,0 +1,83 @@
+m-dialog {
+  align-items: center;
+  display: none;
+  justify-content: center;
+  opacity: 0;
+  overflow: hidden;
+  padding: var(--m-spacing-mini);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+m-dialog:target,
+m-dialog[opened=''],
+m-dialog[opened='true'] {
+  display: flex;
+  opacity: 1;
+  margin: 0 !important;
+  z-index: var(--m-zindex-4);
+}
+
+m-dialog:target .overlay,
+m-dialog[opened=''] .overlay,
+m-dialog[opened='true'] .overlay {
+  background: var(--m-color-overlay);
+  cursor: default;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+m-dialog:target .container,
+m-dialog[opened=''] .container,
+m-dialog[opened='true'] .container {
+  animation: slide-down 0.5s ease 1;
+  z-index: var(--m-zindex-0);
+}
+
+m-dialog .container {
+  background: white;
+  border-radius: var(--m-radius-medium);
+  box-shadow: var(--m-dialog-box-shadow);
+  display: flex;
+  flex-direction: column;
+  max-height: 75vh;
+}
+
+m-dialog .container header {
+  align-items: center;
+  color: var(--m-color-text);
+  border-bottom: 1px solid var(--m-color-border);
+  border-top-left-radius: var(--m-radius-medium);
+  border-top-right-radius: var(--m-radius-medium);
+  display: flex;
+  justify-content: space-between;
+  padding: var(--m-dialog-padding);
+}
+
+m-dialog .container .close {
+  cursor: pointer;
+  font-size: x-large;
+}
+
+m-dialog .container .close:hover {
+  color: var(--m-color-text-dark);
+}
+
+m-dialog .container .title {
+  color: var(--m-color-text-dark);
+  font-size: var(--m-font-large);
+  margin: 0;
+}
+
+m-dialog .container main {
+  overflow-y: var(--m-dialog-content-overflow);
+  padding: var(--m-dialog-padding);
+  position: relative;
+}

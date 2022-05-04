@@ -1,0 +1,74 @@
+m-spinner {
+  --m-border-width: 3px;
+  --m-color: #0f7bc2;
+  --m-size: 1.25rem;
+}
+
+m-spinner {
+  display: inline-block;
+}
+
+m-spinner .spinner {
+  position: relative;
+}
+
+m-spinner .spinner,
+m-spinner .spinner:after,
+m-spinner .spinner:before {
+  border-radius: 50%;
+  width: var(--m-size);
+  height: var(--m-size);
+}
+
+m-spinner .spinner:after,
+m-spinner .spinner:before {
+  box-sizing: border-box;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: calc(var(--m-size) / -2);
+  margin-left: calc(var(--m-size) / -2);
+}
+
+m-spinner .spinner:after {
+  animation: spinner 0.6s linear infinite;
+  border: var(--m-border-width) solid transparent;
+  border-top-color: var(--m-color);
+}
+
+m-spinner .spinner:before {
+  border: var(--m-border-width) solid var(--m-color);
+  opacity: 0.1;
+}
+
+m-spinner[size='tiny'] {
+  --m-border-width: 2px;
+  --m-size: 0.75rem;
+}
+
+m-spinner[size='mini'] {
+  --m-border-width: 2px;
+  --m-size: 0.85rem;
+}
+
+m-spinner[size='small'] {
+  --m-border-width: 2px;
+  --m-size: 1rem;
+}
+
+m-spinner[size='large'] {
+  --m-border-width: 3px;
+  --m-size: 1.75rem;
+}
+
+m-spinner[size='big'] {
+  --m-border-width: 4px;
+  --m-size: 2.5rem;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}

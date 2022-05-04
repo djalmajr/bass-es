@@ -1,0 +1,15 @@
+{
+  "name": "min-ce",
+  "version": "0.0.1",
+  "type": "module",
+  "prettier": {
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "scripts": {
+    "prettier": "npx prettier --write src/**/*.js",
+    "postversion": "git push && git push --tags && npm publish",
+    "version": "npm run prettier"
+  }
+}
