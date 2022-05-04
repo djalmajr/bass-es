@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "type": "module",
   "prettier": {
-    "printWidth": 80,
+    "printWidth": 90,
     "singleQuote": true,
     "trailingComma": "all"
   },
