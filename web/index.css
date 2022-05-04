@@ -1,0 +1,21 @@
+html,
+body {
+  color: var(--m-color-text);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
+
+body * {
+  box-sizing: border-box;
+  line-height: var(--m-line-medium);
+}
+
+#app {
+  font-size: var(--m-font-medium);
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
