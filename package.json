@@ -8,7 +8,7 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "prettier": "npx prettier --write {lib,docs}/**/*.js",
+    "prettier": "npx prettier --write {lib,web}/**/*.js",
     "postversion": "git push && git push --tags && npm publish --access=public",
     "serve": "npx -p sirv-cli sirv . --cors --dev --port 4000",
     "version": "npm run prettier"

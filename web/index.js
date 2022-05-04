@@ -7,8 +7,8 @@ const create = (tag, options = {}) => {
 const rx = /^(m|v)-/i;
 
 const dirs = {
-  m: './lib',
-  v: './docs/app/views',
+  m: '../lib',
+  v: './app/views',
 };
 
 loader({
