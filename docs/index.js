@@ -8,7 +8,7 @@ const rx = /^(m|v)-/i;
 
 const dirs = {
   m: './lib',
-  v: './web/app/views',
+  v: './docs/app/views',
 };
 
 loader({
