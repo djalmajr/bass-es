@@ -1,5 +1,4 @@
-import { html } from 'uhtml';
-import { Base } from 'min-ce/lib/base.js';
+import { Base, html } from 'min-ce/lib/base.js';
 import styles from './app.css' assert { type: 'css' };
 
 export class App extends Base {
@@ -33,7 +32,7 @@ export class App extends Base {
           </form>
           <footer>
             <m-button intent="primary" @click=${this.#toggle}>Salvar</m-button>
-            <m-button variant="outline">Close</m-button>
+            <m-button variant="outline" @click=${this.#toggle}>Close</m-button>
           </footer>
         </m-space>
       </m-dialog>
