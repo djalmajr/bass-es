@@ -1,6 +1,6 @@
 {
   "name": "@djalmajr/min-ce",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "prettier": {
     "printWidth": 90,
