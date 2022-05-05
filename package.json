@@ -10,7 +10,9 @@
   "scripts": {
     "prettier": "npx prettier --write {lib,docs}/**/*.js",
     "postversion": "git push && git push --tags && npm publish --access=public",
-    "serve": "npx -p sirv-cli sirv docs --cors --dev --port 4000",
+    "serve:lib": "npx -p sirv-cli sirv . --cors --dev --port 4001",
+    "serve:web": "npx -p sirv-cli sirv docs --cors --dev --port 4000",
+    "serve": "npx concurrently 'npm run serve:*'",
     "version": "npm run prettier"
   }
 }
