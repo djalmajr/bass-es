@@ -11,25 +11,18 @@ export class App extends Base {
     opened: false,
   };
 
-  #handleToggle = () => {
+  #toggle = () => {
     this.opened = !this.opened;
   };
-
-  /**
-   * @param {Event} evt
-   */
-  handleEvent(evt) {
-    console.log(evt);
-  }
 
   render() {
     return html`
       <m-space align="center">
-        <m-button intent="primary" @click=${this.#handleToggle}>Toggle Modal</m-button>
+        <m-button intent="primary" @click=${this.#toggle}>Toggle Modal</m-button>
         <m-button intent="primary" disabled>Disabled</m-button>
         <m-button intent="primary" loading>Loading</m-button>
       </m-space>
-      <m-dialog mask-closable ?opened=${this.opened} @close=${this.#handleToggle}>
+      <m-dialog mask-closable ?opened=${this.opened} @close=${this.#toggle}>
         <strong slot="title">Save Info</strong>
         <m-space direction="vertical">
           <form>
@@ -39,7 +32,7 @@ export class App extends Base {
             </m-space>
           </form>
           <footer>
-            <m-button intent="primary" @click=${this}>Salvar</m-button>
+            <m-button intent="primary" @click=${this.#toggle}>Salvar</m-button>
             <m-button variant="outline">Close</m-button>
           </footer>
         </m-space>
