@@ -1,7 +1,7 @@
 m-spinner {
-  --m-border-width: 3px;
-  --m-color: #0f7bc2;
-  --m-size: 1.25rem;
+  --m-border-width: var(--m-spinner-border-width, 3px);
+  --m-color: var(--m-spinner-color, #0f7bc2);
+  --m-size: var(--m-spinner-size, 1.25rem);
 }
 
 m-spinner {
