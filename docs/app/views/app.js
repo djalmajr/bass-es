@@ -1,13 +1,22 @@
-import { Base, html } from 'min-ce/lib/base.js';
+import { Base, define, html } from 'min-ce/lib/base.js';
 import styles from './app.css' assert { type: 'css' };
 
 export class App extends Base {
-  static tagName = 'v-app';
-
   static styles = styles;
 
   props = {
+    counter: 0,
     opened: false,
+  };
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.#updateCounter();
+  }
+
+  #updateCounter = () => {
+    this.counter++;
+    setTimeout(this.#updateCounter, 1000);
   };
 
   #toggle = () => {
@@ -16,6 +25,7 @@ export class App extends Base {
 
   render() {
     return html`
+      <h1>Counter: ${this.counter}</h1>
       <m-space align="center">
         <m-button intent="primary" @click=${this.#toggle}>Toggle Modal</m-button>
         <m-button intent="primary" disabled>Disabled</m-button>
@@ -40,6 +50,4 @@ export class App extends Base {
   }
 }
 
-if (!customElements.get(App.tagName)) {
-  customElements.define(App.tagName, App);
-}
+define('v-app', App);
