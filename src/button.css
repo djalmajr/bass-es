@@ -1,37 +1,4 @@
 m-button {
-  --animation-duration: var(--hyper-animation-duration, 350ms);
-  --color-danger: var(--hyper-color-danger, #eb0000);
-  --color-danger-dark: var(--hyper-color-danger-dark, #b30000);
-  --color-gray: var(--hyper-color-gray, #919191);
-  --color-gray-alt: var(--hyper-color-gray-alt, #5e5e5e);
-  --color-gray-darkalt: var(--hyper-color-gray-darkalt, #3b3b3b);
-  --color-gray-lighter: var(--hyper-color-gray-lighter, #c4c4c4);
-  --color-primary: var(--hyper-color-primary, #0f7bc2);
-  --color-primary-alt: var(--hyper-color-primary-alt, #0a588b);
-  --color-primary-dark: var(--hyper-color-primary-dark, #063f65);
-  --color-primary-darkalt: var(--hyper-color-primary-darkalt, #084b77);
-  --color-text: var(--hyper-color-text, #2b2b2b);
-  --color-text-dark: var(--hyper-color-text-dark, #141414);
-  --color-text-disabled: var(--hyper-color-text-disabled, #919191);
-  --font-family: var(--hyper-font-family, sans-serif);
-  --font-tiny: var(--hyper-font-tiny, 0.675rem);
-  --font-mini: var(--hyper-font-mini, 0.75rem);
-  --font-small: var(--hyper-font-small, 0.875rem);
-  --font-medium: var(--hyper-font-medium, 1rem);
-  --font-large: var(--hyper-font-large, 1.25rem);
-  --line-tiny: var(--hyper-line-tiny, 0.75rem);
-  --line-mini: var(--hyper-line-mini, 1rem);
-  --line-small: var(--hyper-line-small, 1.25rem);
-  --line-medium: var(--hyper-line-medium, 1.5rem);
-  --line-large: var(--hyper-line-large, 1.75rem);
-  --radius-small: var(--hyper-radius-small, 0.2rem);
-  --spacing-tiny: var(--hyper-spacing-tiny, 0.25rem);
-  --spacing-mini: var(--hyper-spacing-mini, 0.5rem);
-  --spacing-small: var(--hyper-spacing-small, 0.75rem);
-  --spacing-medium: var(--hyper-spacing-medium, 1rem);
-}
-
-m-button {
   display: inline-flex;
 }
 
@@ -43,154 +10,144 @@ m-button[hidden] {
   display: none;
 }
 
-m-button hyper-spinner {
+m-button m-spinner {
   margin: auto;
 }
 
 m-button button {
   align-items: center;
-  background: var(--color-gray);
-  border: 1px solid var(--color-gray);
-  border-radius: var(--radius-small);
+  background: var(--m-color-gray);
+  border: 1px solid transparent;
+  border-radius: var(--m-radius-small);
   color: #fff;
   display: flex;
-  font-family: var(--font-family);
   outline: none;
-  transition: all var(--animation-duration);
+  transition: all var(--m-animation-duration);
   width: 100%;
 }
 
-m-button:not([readonly]) button:hover {
-  background: var(--color-gray-alt);
-  border-color: var(--color-gray-alt);
-}
-
-m-button:not([readonly]) button:active {
-  background: var(--color-gray-darkalt);
-  border-color: var(--color-gray-darkalt);
-}
-
-m-button:not([readonly]) button:focus {
-  border-color: white;
-  box-shadow: 0 0 0 1px var(--color-gray), inset 0 0 0 1px var(--color-gray);
-}
-
 m-button button:disabled {
-  background: var(--color-gray-lighter);
-  border-color: var(--color-gray-lighter);
-  color: var(--color-text-disabled);
+  background: var(--m-color-gray-light);
+  color: var(--m-color-text-light);
   cursor: not-allowed;
 }
 
+m-button:not([disabled]):not([readonly]) button:hover {
+  background: var(--m-color-gray-alt);
+}
+
+m-button:not([disabled]):not([readonly]) button:active {
+  background: var(--m-color-gray-darker);
+}
+
+m-button:not([disabled]):not([readonly]) button:focus {
+  border-color: white;
+  box-shadow: 0 0 0 1px var(--m-color-gray), inset 0 0 0 1px var(--m-color-gray);
+}
+
 m-button[intent='primary']:not([disabled]) button {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: var(--m-color-primary);
 }
 
 m-button[intent='primary']:not([disabled]):not([readonly]) button:hover {
-  background: var(--color-primary-alt);
+  background: var(--m-color-primary-alt);
 }
 
 m-button[intent='primary']:not([disabled]):not([readonly]) button:active {
-  background: var(--color-primary-darkalt);
+  background: var(--m-color-primary-darkalt);
 }
 
 m-button[intent='primary']:not([disabled]):not([readonly]) button:focus {
   border-color: #fff;
-  box-shadow: 0 0 0 1px var(--color-primary), inset 0 0 0 1px var(--color-primary);
+  box-shadow: 0 0 0 1px var(--m-color-primary), inset 0 0 0 1px var(--m-color-primary);
 }
 
 m-button[intent='primary'][variant='ghost']:not([disabled]) button {
   background: transparent;
   border-color: transparent;
-  color: var(--color-primary);
+  color: var(--m-color-primary);
 }
 
 m-button[intent='primary'][variant='ghost']:not([disabled]):not([readonly]) button:active,
 m-button[intent='primary'][variant='ghost']:not([disabled]):not([readonly]) button:hover,
 m-button[intent='primary'][variant='ghost']:not([disabled]):not([readonly]) button:focus {
   box-shadow: none;
-  color: var(--color-primary-dark);
+  color: var(--m-color-primary-dark);
 }
 
 m-button[intent='primary'][variant='outline']:not([danger]):not([disabled]) button {
   background: #fff;
-  color: var(--color-primary);
+  color: var(--m-color-primary);
 }
 
 m-button[intent='danger']:not([disabled]) button {
-  background: var(--color-danger);
-  border-color: var(--color-danger);
+  background: var(--m-color-danger);
+  border-color: var(--m-color-danger);
 }
 
 m-button[intent='danger']:not([disabled]):not([readonly]) button:hover {
-  background: var(--color-danger-dark);
+  background: var(--m-color-danger-dark);
 }
 
 m-button[intent='danger']:not([disabled]):not([readonly]) button:active {
-  background: var(--color-danger-dark);
+  background: var(--m-color-danger-dark);
 }
 
 m-button[intent='danger']:not([disabled]):not([readonly]) button:focus {
   border-color: #fff;
-  box-shadow: 0 0 0 1px var(--color-danger), inset 0 0 0 1px var(--color-danger);
+  box-shadow: 0 0 0 1px var(--m-color-danger), inset 0 0 0 1px var(--m-color-danger);
 }
 
 m-button[intent='danger'][variant='ghost']:not([disabled]) button {
   background: transparent;
   border-color: transparent;
-  color: var(--color-danger);
+  color: var(--m-color-danger);
 }
 
 m-button[intent='danger'][variant='ghost']:not([disabled]):not([readonly]) button:active,
 m-button[intent='danger'][variant='ghost']:not([disabled]):not([readonly]) button:hover,
 m-button[intent='danger'][variant='ghost']:not([disabled]):not([readonly]) button:focus {
   box-shadow: none;
-  color: var(--color-danger-dark);
+  color: var(--m-color-danger-dark);
 }
 
 m-button[intent='danger'][variant='outline']:not([disabled]) button {
   background: #fff;
-  color: var(--color-danger);
+  color: var(--m-color-danger);
 }
 
 m-button[size='tiny'] button {
-  border-radius: var(--radius-small);
-  font-size: var(--font-tiny);
-  line-height: var(--line-tiny);
-  padding: 0 var(--spacing-tiny);
-  min-height: calc(var(--spacing-tiny) * 2 + var(--line-tiny) + 2px);
+  border-radius: var(--m-radius-small);
+  font-size: var(--m-font-tiny);
+  line-height: var(--m-line-tiny);
+  padding: 0 var(--m-spacing-tiny);
 }
 
 m-button[size='mini'] button {
-  border-radius: var(--radius-small);
-  font-size: var(--font-mini);
-  line-height: var(--line-mini);
-  padding: var(--spacing-tiny) var(--spacing-mini);
-  min-height: calc(var(--spacing-tiny) * 2 + var(--line-mini) + 2px);
+  border-radius: var(--m-radius-small);
+  font-size: var(--m-font-mini);
+  line-height: var(--m-line-mini);
+  padding: var(--m-spacing-tiny) var(--m-spacing-mini);
 }
 
 m-button[size='small'] button {
-  border-radius: var(--radius-small);
-  font-size: var(--font-small);
-  line-height: var(--line-small);
-  padding: var(--spacing-tiny) var(--spacing-small);
-  min-height: calc(var(--spacing-tiny) * 2 + var(--line-small) + 2px);
+  border-radius: var(--m-radius-small);
+  font-size: var(--m-font-small);
+  line-height: var(--m-line-small);
+  padding: var(--m-spacing-tiny) var(--m-spacing-small);
 }
 
 m-button button,
 m-button[size='medium'] button {
-  font-size: var(--font-medium);
-  line-height: var(--line-medium);
-  padding: var(--spacing-tiny) var(--spacing-small);
-  min-height: calc(var(--spacing-tiny) * 2 + var(--line-medium) + 2px);
+  font-size: var(--m-font-medium);
+  line-height: var(--m-line-medium);
+  padding: var(--m-spacing-mini) var(--m-spacing-small);
 }
 
 m-button[size='large'] button {
-  font-size: var(--font-large);
-  line-height: var(--line-large);
-  padding: var(--spacing-mini) var(--spacing-medium);
-  min-height: calc(var(--spacing-mini) * 2 + var(--line-large) + 2px);
+  font-size: var(--m-font-large);
+  line-height: var(--m-line-large);
+  padding: var(--m-spacing-mini) var(--m-spacing-medium);
 }
 
 m-button[loading] button {
@@ -206,14 +163,14 @@ m-button[variant='ghost'][disabled] button {
 m-button[variant='ghost']:not([disabled]) button {
   background: transparent;
   border-color: transparent;
-  color: var(--color-text);
+  color: var(--m-color-text);
 }
 
 m-button[variant='ghost']:not([disabled]):not([readonly]) button:active,
 m-button[variant='ghost']:not([disabled]):not([readonly]) button:hover,
 m-button[variant='ghost']:not([disabled]):not([readonly]) button:focus {
   box-shadow: none;
-  color: var(--color-text-dark);
+  color: var(--m-color-text-dark);
 }
 
 m-button[variant='ghost']:not([disabled]):not([readonly]) button:hover {
@@ -226,5 +183,5 @@ m-button[variant='outline'][disabled] button {
 
 m-button[variant='outline']:not([disabled]) button {
   background: #fff;
-  color: var(--color-text);
+  color: var(--m-color-text);
 }
