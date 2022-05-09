@@ -7,12 +7,27 @@
     "singleQuote": true,
     "trailingComma": "all"
   },
+  "files": [
+    "css",
+    "lib"
+  ],
   "scripts": {
-    "prettier": "npx prettier --write {lib,docs}/**/*.js",
+    "build": "ls src/** | cut -d ' ' -f 2- | xargs npm run esbuild",
+    "esbuild": "esbuild --minify --outdir=lib",
     "postversion": "git push && git push --tags && npm publish --access=public",
-    "serve:lib": "npx -p sirv-cli sirv . --cors --dev --port 4001",
-    "serve:web": "npx -p sirv-cli sirv docs --cors --dev --port 4000",
-    "serve": "npx concurrently 'npm run serve:*'",
-    "version": "npm run prettier"
+    "prettier": "prettier --write {src,docs}/**/*.js",
+    "serve:lib": "sirv . --cors --dev --port 4001",
+    "serve:web": "sirv docs --cors --dev --port 4000",
+    "serve": "run-p serve:*",
+    "dev": "run-p serve watch",
+    "version": "run-s prettier build",
+    "watch": "chokidar src/**/*.{css,js} -c 'npm run esbuild {path}'"
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "esbuild": "^0.14.38",
+    "npm-run-all": "4.1.5",
+    "prettier": "^2.6.2",
+    "sirv-cli": "^2.0.2"
   }
 }

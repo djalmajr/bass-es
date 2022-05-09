@@ -21,14 +21,14 @@ export const define = (name, Clazz) => {
 };
 
 export class Base extends HTMLElement {
-  static shadow = false;
+  static shadowDOM = false;
 
   #props = {};
 
   constructor() {
     super();
 
-    if (this.constructor.shadow) {
+    if (this.constructor.shadowDOM) {
       this.attachShadow({ mode: 'open' });
     }
   }
@@ -53,7 +53,7 @@ export class Base extends HTMLElement {
             this.#props[key] = value;
 
             const name = kebabCase(key);
-            const prop = parse.attr(this.attr(name)) ?? this.props[key];
+            const prop = parse.attr(this.attr(name));
             const { observedAttributes } = this.constructor;
 
             if (observedAttributes?.includes(name) && value !== prop) {
@@ -67,9 +67,7 @@ export class Base extends HTMLElement {
     this.#render();
   }
 
-  disconnectedCallback() {
-    // this.#observer?.disconnect();
-  }
+  disconnectedCallback() {}
 
   attributeChangedCallback(key, old, val) {
     if (!this.isConnected) {
@@ -80,7 +78,7 @@ export class Base extends HTMLElement {
     const prop = camelCase(key);
 
     if (this.props?.[prop] !== undefined) {
-      this[prop] = parse.attr(val) ?? this.props[prop];
+      this[prop] = parse.attr(val);
     }
 
     this.#render();
@@ -172,6 +170,11 @@ export class Base extends HTMLElement {
 
     if (wire !== info.wire) {
       info.wire = wire;
+
+      if (this.constructor.shadowDOM) {
+        root.replaceChildren(wire.valueOf());
+        return;
+      }
 
       const slot = {};
 
