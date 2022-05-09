@@ -1,4 +1,4 @@
-import { styleMap } from 'help-es/lib/styleMap.mjs';
+import { styleMap } from 'help-es/styleMap.mjs';
 import { Base, define, html } from './base.js';
 import styles from './dialog.css' assert { type: 'css' };
 

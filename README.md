@@ -1,6 +1,6 @@
-# @djalmajr/min-ce
+# bass-es
 
-A minimal custom elements with:
+Custom elements with:
 
 - A base class with support for slots in LightDOM (supports ShadowDOM as well 😁);
 - No bundlers... Only what the browsers can offer;

@@ -1,4 +1,4 @@
-import { Base, define, html } from 'min-ce/lib/base.js';
+import { Base, define, html } from 'bass-es/base.js';
 import styles from './app.css' assert { type: 'css' };
 
 export class App extends Base {

@@ -1,7 +1,7 @@
-import { camelCase } from 'help-es/lib/camelCase.mjs';
-import { isObject } from 'help-es/lib/isObject.mjs';
-import { kebabCase } from 'help-es/lib/kebabCase.mjs';
-import { parseJSON } from 'help-es/lib/parseJSON.mjs';
+import { camelCase } from 'help-es/camelCase.mjs';
+import { isObject } from 'help-es/isObject.mjs';
+import { kebabCase } from 'help-es/kebabCase.mjs';
+import { parseJSON } from 'help-es/parseJSON.mjs';
 import { cache, createCache, Hole, html, render, unroll } from './html.js';
 import createReactive from './reactive.js';
 
