@@ -1,11 +1,12 @@
-import { Base, define, html } from './base.js';
+import { define } from './base.js';
+import { Flex } from './flex.js';
 import styles from './space.css' assert { type: 'css' };
 
-export class Space extends Base {
+export class Space extends Flex {
   static styles = styles;
 
-  render() {
-    return html`<slot />`;
+  static get observedAttributes() {
+    return super.observedAttributes.concat(['align', 'direction', 'size']);
   }
 }
 

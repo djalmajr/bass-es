@@ -161,7 +161,7 @@ export class Base extends HTMLElement {
   // Private
 
   #render = () => {
-    if (!this.isConnected) return;
+    if (!this.isConnected || !this.render) return;
 
     const root = this.$el;
     const hole = this.render();
