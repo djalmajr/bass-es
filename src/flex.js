@@ -84,11 +84,11 @@ export class Flex extends Base {
     Object.assign(
       this.style,
       attrs.reduce((style, name) => {
-        const value = this.getAttribute(name)?.trim();
+        const value = this.getAttribute(name);
         const valid = !blacklist.includes(name) && whitelist.includes(name);
 
         return (
-          (!(value && valid) && style) ||
+          (!valid && style) ||
           (!keys(alias).includes(name) && { ...style, [name]: value }) ||
           alias[name].reduce((r, k) => ({ ...r, [k]: value }), style)
         );
