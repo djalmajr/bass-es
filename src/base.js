@@ -14,12 +14,6 @@ const parse = {
 
 export { html, render };
 
-export const define = (name, Clazz) => {
-  if (!customElements.get(name)) {
-    customElements.define(name, Clazz);
-  }
-};
-
 export class Base extends HTMLElement {
   static shadowDOM = false;
 
@@ -31,16 +25,16 @@ export class Base extends HTMLElement {
     if (this.constructor.shadowDOM) {
       this.attachShadow({ mode: 'open' });
     }
-  }
 
-  connectedCallback() {
     const { styles } = this.constructor;
     const target = this.shadowRoot || document;
 
     if (styles && !target.adoptedStyleSheets.includes(styles)) {
       target.adoptedStyleSheets = [...target.adoptedStyleSheets, styles];
     }
+  }
 
+  connectedCallback() {
     if (isObject(this.props)) {
       this.#props = reactive(this.props, this.#render);
 

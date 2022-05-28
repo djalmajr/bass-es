@@ -1,4 +1,4 @@
-import { Base, define, html } from './base.js';
+import { Base, html } from './base.js';
 import styles from './spinner.css' assert { type: 'css' };
 
 export class Spinner extends Base {
@@ -9,4 +9,4 @@ export class Spinner extends Base {
   }
 }
 
-define('m-spinner', Spinner);
+customElements.define('m-spinner', Spinner);

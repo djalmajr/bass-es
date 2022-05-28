@@ -1,4 +1,4 @@
-import { Base, define, html } from 'bass-es/base.js';
+import { Base, html } from 'bass-es/base.js';
 import styles from './app.css' assert { type: 'css' };
 
 export class App extends Base {
@@ -50,4 +50,4 @@ export class App extends Base {
   }
 }
 
-define('v-app', App);
+customElements.define('v-app', App);

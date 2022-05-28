@@ -1,4 +1,4 @@
-import { Base, define, html } from './base.js';
+import { Base, html } from './base.js';
 import styles from './button.css' assert { type: 'css' };
 
 export class Button extends Base {
@@ -53,4 +53,4 @@ export class Button extends Base {
   }
 }
 
-define('m-button', Button);
+customElements.define('m-button', Button);

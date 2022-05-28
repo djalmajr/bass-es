@@ -1,5 +1,5 @@
 import { styleMap } from 'help-es/styleMap.mjs';
-import { Base, define, html } from './base.js';
+import { Base, html } from './base.js';
 import styles from './dialog.css' assert { type: 'css' };
 
 export class Dialog extends Base {
@@ -50,4 +50,4 @@ export class Dialog extends Base {
   }
 }
 
-define('m-dialog', Dialog);
+customElements.define('m-dialog', Dialog);
