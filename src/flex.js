@@ -1,41 +1,57 @@
-const { keys } = Object;
+import { Size } from './constants.js';
 
-const alias = {
-  // COLORS
-  ['bg']: ['background'],
-  ['shadow']: ['box-shadow'],
-  // LAYOUT
-  ['w']: ['width'],
-  ['h']: ['height'],
-  ['min-w']: ['min-width'],
-  ['max-w']: ['max-width'],
-  ['min-h']: ['min-height'],
-  ['max-h']: ['max-height'],
-  ['size']: ['width', 'height'],
-  ['radius']: ['border-radius'],
-  // POSITION
-  ['pos']: ['position'],
-  ['t']: ['top'],
-  ['l']: ['left'],
-  ['r']: ['right'],
-  ['b']: ['bottom'],
-  ['z']: ['z-index'],
-  // SPACE
-  ['mt']: ['margin-top'],
-  ['ml']: ['margin-left'],
-  ['mr']: ['margin-right'],
-  ['mb']: ['margin-bottom'],
-  ['mx']: ['margin-left', 'margin-right'],
-  ['my']: ['margin-bottom', 'margin-top'],
-  ['m']: ['margin-left', 'margin-right', 'margin-bottom', 'margin-top'],
-  ['pt']: ['padding-top'],
-  ['pl']: ['padding-left'],
-  ['pr']: ['padding-right'],
-  ['pb']: ['padding-bottom'],
-  ['px']: ['padding-left', 'padding-right'],
-  ['py']: ['padding-bottom', 'padding-top'],
-  ['p']: ['padding-left', 'padding-right', 'padding-bottom', 'padding-top'],
+const { assign, keys, values } = Object;
+
+const colors = {
+  bg: ['background'],
+  shadow: ['box-shadow'],
 };
+
+const flex = {
+  align: ['align-items'],
+  justify: ['justify-content'],
+  'flex-dir': ['flex-direction'],
+};
+
+const layout = {
+  w: ['width'],
+  h: ['height'],
+  dir: ['direction'],
+  size: ['width', 'height'],
+  radius: ['border-radius'],
+  'min-w': ['min-width'],
+  'max-w': ['max-width'],
+  'min-h': ['min-height'],
+  'max-h': ['max-height'],
+};
+
+const position = {
+  pos: ['position'],
+  t: ['top'],
+  l: ['left'],
+  r: ['right'],
+  b: ['bottom'],
+  z: ['z-index'],
+};
+
+const spaces = {
+  m: ['margin'],
+  mt: ['margin-top'],
+  ml: ['margin-left'],
+  mr: ['margin-right'],
+  mb: ['margin-bottom'],
+  mx: ['margin-left', 'margin-right'],
+  my: ['margin-bottom', 'margin-top'],
+  p: ['padding'],
+  pt: ['padding-top'],
+  pl: ['padding-left'],
+  pr: ['padding-right'],
+  pb: ['padding-bottom'],
+  px: ['padding-left', 'padding-right'],
+  py: ['padding-bottom', 'padding-top'],
+};
+
+const aliases = assign(colors, flex, layout, position, spaces);
 
 // https://www.w3.org/Style/CSS/all-properties.en.html
 const allowed = [
@@ -582,17 +598,59 @@ const allowed = [
   'z-index',
 ];
 
-const whitelist = allowed.concat(keys(alias));
+const whitelist = allowed.concat(keys(aliases));
+
+const theme = {
+  spaces: keys(spaces).concat(values(spaces).flat()),
+};
+
+const sheet = new CSSStyleSheet();
+
+const generate = (size) => {
+  return /* css */ `
+    m-flex[space=${size}]:not([flex-dir*='column']):not([flex-direction*='column']) > *:not([hidden]):not(:first-child) {
+      margin-left: calc(var(--m-spacing-${size}) * calc(1 - 0));
+      margin-right: calc(var(--m-spacing-${size}) * 0);
+    }
+
+    m-flex[space=${size}][flex-dir='horizontal-reverse'] > *:not([hidden]):not(:first-child),
+    m-flex[space=${size}][flex-direction='horizontal-reverse']
+      > *:not([hidden]):not(:first-child) {
+      margin-left: calc(var(--m-spacing-${size}) * calc(1 - 1));
+      margin-right: calc(var(--m-spacing-${size}) * 1);
+    }
+
+    m-flex[space=${size}][flex-dir='column'] > *:not([hidden]):not(:first-child),
+    m-flex[space=${size}][flex-direction='column'] > *:not([hidden]):not(:first-child) {
+      margin-top: calc(var(--m-spacing-${size}) * calc(1 - 0));
+      margin-bottom: calc(var(--m-spacing-${size}) * 0);
+    }
+
+    m-flex[space=${size}][flex-dir='column-reverse'] > *:not([hidden]):not(:first-child),
+    m-flex[space=${size}][flex-direction='column-reverse']
+      > *:not([hidden]):not(:first-child) {
+      margin-top: calc(var(--m-spacing-${size}) * calc(1 - 1));
+      margin-bottom: calc(var(--m-spacing-${size}) * 1);
+    }
+  `;
+};
+
+sheet.replaceSync(values(Size).map(generate).join(''));
 
 export class Flex extends HTMLElement {
   static get observedAttributes() {
-    return ['class', 'disabled', 'hidden'];
+    return ['class', 'disabled', 'hidden', 'space'];
   }
 
   /**
    * @type {MutationObserver}
    */
   #observer = null;
+
+  constructor() {
+    super();
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+  }
 
   connectedCallback() {
     this.style.display = 'flex';
@@ -615,6 +673,18 @@ export class Flex extends HTMLElement {
     this.#observer?.disconnect();
   }
 
+  #parse(name, value) {
+    if (theme.spaces.includes(name) && values(Size).includes(value)) {
+      return `var(--m-spacing-${value})`;
+    }
+
+    if (!Number.isNaN(Number(value))) {
+      return `${value}px`;
+    }
+
+    return value;
+  }
+
   /**
    *
    * @param {string[]} attrs
@@ -626,13 +696,13 @@ export class Flex extends HTMLElement {
     Object.assign(
       this.style,
       attrs.reduce((style, name) => {
-        const value = this.getAttribute(name);
-        const valid = !blacklist.includes(name) && whitelist.includes(name);
+        const value = this.#parse(name, this.getAttribute(name));
+        const invalid = blacklist.includes(name) || !whitelist.includes(name);
 
         return (
-          (!valid && style) ||
-          (!keys(alias).includes(name) && { ...style, [name]: value }) ||
-          alias[name].reduce((r, k) => ({ ...r, [k]: value }), style)
+          (invalid && style) ||
+          (!keys(aliases).includes(name) && { ...style, [name]: value }) ||
+          aliases[name].reduce((r, k) => ({ ...r, [k]: value }), style)
         );
       }, {}),
     );

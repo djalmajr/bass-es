@@ -25,26 +25,28 @@ export class App extends Base {
 
   render() {
     return html`
-      <h1>Counter: ${this.counter}</h1>
-      <m-space align="center">
+      <m-flex font-size="large" font-weight="600" mb="large">
+        Counter: ${this.counter}
+      </m-flex>
+      <m-flex space="medium" align="center">
         <m-button intent="primary" @click=${this.#toggle}>Toggle Modal</m-button>
         <m-button intent="primary" disabled>Disabled</m-button>
         <m-button intent="primary" loading>Loading</m-button>
-      </m-space>
+      </m-flex>
       <m-dialog mask-closable ?opened=${this.opened} @close=${this.#toggle}>
         <strong slot="title">Save Info</strong>
-        <m-space direction="vertical">
+        <m-flex space="medium" flex-dir="column">
           <form>
-            <m-space direction="vertical" size="tiny">
+            <m-flex space="tiny" flex-dir="column" size="tiny">
               <span>Name</span>
               <input name="name" />
-            </m-space>
+            </m-flex>
           </form>
           <footer>
             <m-button intent="primary" @click=${this.#toggle}>Salvar</m-button>
             <m-button variant="outline" @click=${this.#toggle}>Close</m-button>
           </footer>
-        </m-space>
+        </m-flex>
       </m-dialog>
     `;
   }
