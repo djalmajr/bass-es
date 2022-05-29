@@ -14,7 +14,7 @@ export class Dialog extends Base {
     maskClosable: false,
     opened: false,
     titleText: 'Dialog',
-    width: '500px',
+    width: '350px',
   };
 
   #handleClose = () => {

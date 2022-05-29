@@ -54,6 +54,7 @@ const spaces = {
 const aliases = assign(colors, flex, layout, position, spaces);
 
 // https://www.w3.org/Style/CSS/all-properties.en.html
+// allowed.filter(s => s in document.body.style)
 const allowed = [
   '-webkit-line-clamp',
   'accent-color',
@@ -73,7 +74,6 @@ const allowed = [
   'animation-timing-function',
   'appearance',
   'aspect-ratio',
-  'azimuth',
   'backface-visibility',
   'background',
   'background-attachment',
@@ -83,20 +83,14 @@ const allowed = [
   'background-image',
   'background-origin',
   'background-position',
+  'background-position-x',
+  'background-position-y',
   'background-repeat',
+  'background-repeat-x',
+  'background-repeat-y',
   'background-size',
   'baseline-shift',
-  'baseline-source',
-  'block-ellipsis',
   'block-size',
-  'block-step',
-  'block-step-align',
-  'block-step-insert',
-  'block-step-round',
-  'block-step-size',
-  'bookmark-label',
-  'bookmark-level',
-  'bookmark-state',
   'border',
   'border-block',
   'border-block-color',
@@ -116,7 +110,6 @@ const allowed = [
   'border-bottom-right-radius',
   'border-bottom-style',
   'border-bottom-width',
-  'border-boundary',
   'border-collapse',
   'border-color',
   'border-end-end-radius',
@@ -160,24 +153,18 @@ const allowed = [
   'border-top-width',
   'border-width',
   'bottom',
-  'box-decoration-break',
   'box-shadow',
   'box-sizing',
-  'box-snap',
   'break-after',
   'break-before',
   'break-inside',
   'caption-side',
-  'caret',
   'caret-color',
-  'caret-shape',
-  'chains',
   'clear',
   'clip',
   'clip-path',
   'clip-rule',
   'color',
-  'color-adjust',
   'color-interpolation-filters',
   'color-scheme',
   'column-count',
@@ -196,34 +183,20 @@ const allowed = [
   'contain-intrinsic-inline-size',
   'contain-intrinsic-size',
   'contain-intrinsic-width',
-  'container',
-  'container-name',
-  'container-type',
   'content',
   'content-visibility',
-  'continue',
   'counter-increment',
   'counter-reset',
   'counter-set',
-  'cue',
-  'cue-after',
-  'cue-before',
   'cursor',
   'direction',
   'display',
   'dominant-baseline',
-  'elevation',
   'empty-cells',
+  'fallback',
   'fill',
-  'fill-break',
-  'fill-color',
-  'fill-image',
   'fill-opacity',
-  'fill-origin',
-  'fill-position',
-  'fill-repeat',
   'fill-rule',
-  'fill-size',
   'filter',
   'flex',
   'flex-basis',
@@ -233,23 +206,16 @@ const allowed = [
   'flex-shrink',
   'flex-wrap',
   'float',
-  'float-defer',
-  'float-offset',
-  'float-reference',
   'flood-color',
   'flood-opacity',
-  'flow',
-  'flow-from',
-  'flow-into',
   'font',
+  'font-display',
   'font-family',
   'font-feature-settings',
   'font-kerning',
-  'font-language-override',
   'font-optical-sizing',
   'font-palette',
   'font-size',
-  'font-size-adjust',
   'font-stretch',
   'font-style',
   'font-synthesis',
@@ -257,20 +223,14 @@ const allowed = [
   'font-synthesis-style',
   'font-synthesis-weight',
   'font-variant',
-  'font-variant-alternates',
   'font-variant-caps',
   'font-variant-east-asian',
-  'font-variant-emoji',
   'font-variant-ligatures',
   'font-variant-numeric',
-  'font-variant-position',
   'font-variation-settings',
   'font-weight',
-  'footnote-display',
-  'footnote-policy',
   'forced-color-adjust',
   'gap',
-  'glyph-orientation-vertical',
   'grid',
   'grid-area',
   'grid-auto-columns',
@@ -278,30 +238,24 @@ const allowed = [
   'grid-auto-rows',
   'grid-column',
   'grid-column-end',
+  'grid-column-gap',
   'grid-column-start',
+  'grid-gap',
   'grid-row',
   'grid-row-end',
+  'grid-row-gap',
   'grid-row-start',
   'grid-template',
   'grid-template-areas',
   'grid-template-columns',
   'grid-template-rows',
-  'hanging-punctuation',
   'height',
-  'hyphenate-character',
-  'hyphenate-limit-chars',
-  'hyphenate-limit-last',
-  'hyphenate-limit-lines',
-  'hyphenate-limit-zone',
   'hyphens',
   'image-orientation',
   'image-rendering',
-  'image-resolution',
-  'initial-letter',
-  'initial-letter-align',
-  'initial-letter-wrap',
+  'inherits',
+  'initial-value',
   'inline-size',
-  'inline-sizing',
   'inset',
   'inset-block',
   'inset-block-end',
@@ -313,17 +267,12 @@ const allowed = [
   'justify-content',
   'justify-items',
   'justify-self',
-  'leading-trim',
   'left',
   'letter-spacing',
   'lighting-color',
   'line-break',
-  'line-clamp',
-  'line-grid',
+  'line-gap-override',
   'line-height',
-  'line-height-step',
-  'line-padding',
-  'line-snap',
   'list-style',
   'list-style-image',
   'list-style-position',
@@ -333,62 +282,32 @@ const allowed = [
   'margin-block-end',
   'margin-block-start',
   'margin-bottom',
-  'margin-break',
   'margin-inline',
   'margin-inline-end',
   'margin-inline-start',
   'margin-left',
   'margin-right',
   'margin-top',
-  'margin-trim',
   'marker',
   'marker-end',
-  'marker-knockout-left',
-  'marker-knockout-right',
   'marker-mid',
-  'marker-pattern',
-  'marker-segment',
-  'marker-side',
   'marker-start',
   'mask',
-  'mask-border',
-  'mask-border-mode',
-  'mask-border-outset',
-  'mask-border-repeat',
-  'mask-border-slice',
-  'mask-border-source',
-  'mask-border-width',
-  'mask-clip',
-  'mask-composite',
-  'mask-image',
-  'mask-mode',
-  'mask-origin',
-  'mask-position',
-  'mask-repeat',
-  'mask-size',
   'mask-type',
   'max-block-size',
   'max-height',
   'max-inline-size',
-  'max-lines',
   'max-width',
   'min-block-size',
   'min-height',
   'min-inline-size',
-  'min-intrinsic-sizing',
   'min-width',
   'mix-blend-mode',
-  'nav-down',
-  'nav-left',
-  'nav-right',
-  'nav-up',
   'object-fit',
   'object-position',
   'offset',
-  'offset-anchor',
   'offset-distance',
   'offset-path',
-  'offset-position',
   'offset-rotate',
   'opacity',
   'order',
@@ -400,9 +319,7 @@ const allowed = [
   'outline-width',
   'overflow',
   'overflow-anchor',
-  'overflow-block',
   'overflow-clip-margin',
-  'overflow-inline',
   'overflow-wrap',
   'overflow-x',
   'overflow-y',
@@ -426,35 +343,17 @@ const allowed = [
   'page-break-after',
   'page-break-before',
   'page-break-inside',
-  'pause',
-  'pause-after',
-  'pause-before',
   'perspective',
   'perspective-origin',
-  'pitch',
-  'pitch-range',
   'place-content',
   'place-items',
   'place-self',
-  'play-during',
   'position',
-  'print-color-adjust',
   'quotes',
-  'region-fragment',
   'resize',
-  'rest',
-  'rest-after',
-  'rest-before',
-  'richness',
   'right',
-  'rotate',
   'row-gap',
-  'ruby-align',
-  'ruby-merge',
-  'ruby-overhang',
   'ruby-position',
-  'running',
-  'scale',
   'scroll-behavior',
   'scroll-margin',
   'scroll-margin-block',
@@ -481,81 +380,42 @@ const allowed = [
   'scroll-snap-align',
   'scroll-snap-stop',
   'scroll-snap-type',
-  'scrollbar-color',
   'scrollbar-gutter',
-  'scrollbar-width',
   'shape-image-threshold',
-  'shape-inside',
   'shape-margin',
   'shape-outside',
-  'spatial-navigation-action',
-  'spatial-navigation-contain',
-  'spatial-navigation-function',
   'speak',
   'speak-as',
-  'speak-header',
-  'speak-numeral',
-  'speak-punctuation',
-  'speech-rate',
-  'stress',
-  'string-set',
   'stroke',
-  'stroke-align',
-  'stroke-alignment',
-  'stroke-break',
-  'stroke-color',
-  'stroke-dash-corner',
-  'stroke-dash-justify',
-  'stroke-dashadjust',
   'stroke-dasharray',
-  'stroke-dashcorner',
   'stroke-dashoffset',
-  'stroke-image',
   'stroke-linecap',
   'stroke-linejoin',
   'stroke-miterlimit',
   'stroke-opacity',
-  'stroke-origin',
-  'stroke-position',
-  'stroke-repeat',
-  'stroke-size',
   'stroke-width',
   'tab-size',
   'table-layout',
   'text-align',
-  'text-align-all',
   'text-align-last',
   'text-combine-upright',
   'text-decoration',
   'text-decoration-color',
   'text-decoration-line',
-  'text-decoration-skip',
-  'text-decoration-skip-box',
   'text-decoration-skip-ink',
-  'text-decoration-skip-inset',
-  'text-decoration-skip-self',
-  'text-decoration-skip-spaces',
   'text-decoration-style',
   'text-decoration-thickness',
-  'text-edge',
   'text-emphasis',
   'text-emphasis-color',
   'text-emphasis-position',
-  'text-emphasis-skip',
   'text-emphasis-style',
-  'text-group-align',
   'text-indent',
-  'text-justify',
   'text-orientation',
   'text-overflow',
   'text-shadow',
-  'text-space-collapse',
-  'text-space-trim',
-  'text-spacing',
   'text-transform',
   'text-underline-offset',
   'text-underline-position',
-  'text-wrap',
   'top',
   'transform',
   'transform-box',
@@ -566,34 +426,17 @@ const allowed = [
   'transition-duration',
   'transition-property',
   'transition-timing-function',
-  'translate',
   'unicode-bidi',
   'user-select',
   'vertical-align',
   'visibility',
-  'voice-balance',
-  'voice-duration',
-  'voice-family',
-  'voice-pitch',
-  'voice-range',
-  'voice-rate',
-  'voice-stress',
-  'voice-volume',
-  'volume',
   'white-space',
   'widows',
   'width',
   'will-change',
-  'word-boundary-detection',
-  'word-boundary-expansion',
   'word-break',
   'word-spacing',
   'word-wrap',
-  'wrap-after',
-  'wrap-before',
-  'wrap-flow',
-  'wrap-inside',
-  'wrap-through',
   'writing-mode',
   'z-index',
 ];
@@ -639,32 +482,33 @@ sheet.replaceSync(values(Size).map(generate).join(''));
 
 export class Flex extends HTMLElement {
   static get observedAttributes() {
-    return ['class', 'disabled', 'hidden', 'space'];
+    return ['as', 'class', 'disabled', 'hidden', 'space'];
   }
 
-  /**
-   * @type {MutationObserver}
-   */
-  #observer = null;
+  #observer = new MutationObserver((a) => {
+    this.#updateStyle(a.map((m) => m.attributeName));
+  });
+
+  #root = this;
 
   constructor() {
     super();
+    this.#observer.observe(this, { attributes: true });
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
   }
 
   connectedCallback() {
-    this.style.display = 'flex';
-    this.#update(this.getAttributeNames());
-    this.#observer = new MutationObserver((a) => {
-      this.#update(a.map((m) => m.attributeName));
-    });
-    this.#observer.observe(this, { attributes: true });
+    this.#updateStyle(this.getAttributeNames());
   }
 
-  attributeChangedCallback(key, _old, val) {
+  attributeChangedCallback(key, _old, _val) {
     switch (key) {
+      case 'as':
+        setTimeout(() => this.#updateRoot());
+        break;
+
       case 'hidden':
-        this.style.display = val === null ? 'flex' : 'none';
+        this.#updateStyle();
         break;
     }
   }
@@ -673,12 +517,40 @@ export class Flex extends HTMLElement {
     this.#observer?.disconnect();
   }
 
+  /**
+   * Generates styles from component's attributes.
+   *
+   * @param {object} defaults
+   * @param {string[]} attrs
+   * @returns {object}
+   */
+  #styles(defaults = {}, attrs = this.getAttributeNames()) {
+    const { observedAttributes = [] } = this.constructor;
+    const blacklist = ['style'].concat(observedAttributes);
+
+    return attrs.reduce((style, name) => {
+      const value = this.#parse(name, this.getAttribute(name));
+      const invalid = blacklist.includes(name) || !whitelist.includes(name);
+
+      return (
+        (invalid && style) ||
+        (!keys(aliases).includes(name) && { ...style, [name]: value }) ||
+        aliases[name].reduce((r, k) => ({ ...r, [k]: value }), style)
+      );
+    }, defaults);
+  }
+
+  /**
+   * @param {string} name
+   * @param {string | null} value
+   * @return {string | null}
+   */
   #parse(name, value) {
     if (theme.spaces.includes(name) && values(Size).includes(value)) {
       return `var(--m-spacing-${value})`;
     }
 
-    if (!Number.isNaN(Number(value))) {
+    if (value !== null && !Number.isNaN(Number(value))) {
       return `${value}px`;
     }
 
@@ -686,26 +558,44 @@ export class Flex extends HTMLElement {
   }
 
   /**
-   *
    * @param {string[]} attrs
    */
-  #update(attrs) {
-    const { observedAttributes = [] } = this.constructor;
-    const blacklist = ['style'].concat(observedAttributes);
-
+  #updateStyle(attrs) {
     Object.assign(
-      this.style,
-      attrs.reduce((style, name) => {
-        const value = this.#parse(name, this.getAttribute(name));
-        const invalid = blacklist.includes(name) || !whitelist.includes(name);
-
-        return (
-          (invalid && style) ||
-          (!keys(aliases).includes(name) && { ...style, [name]: value }) ||
-          aliases[name].reduce((r, k) => ({ ...r, [k]: value }), style)
-        );
-      }, {}),
+      this.#root.style,
+      { display: this.hasAttribute('hidden') ? 'none' : 'flex' },
+      this.#styles({}, attrs),
     );
+  }
+
+  #updateRoot() {
+    const tag = this.getAttribute('as');
+    const frag = document.createDocumentFragment();
+
+    if (tag) {
+      if (this === this.#root) {
+        Array.from(this.childNodes).forEach((n) => frag.append(n));
+        this.#root = document.createElement(tag);
+        this.#root.append(frag);
+        this.appendChild(this.#root);
+      } else {
+        const root = document.createElement(tag);
+
+        this.#root.parentNode.replaceChild(root, this.#root);
+      }
+
+      const styles = this.#styles({ display: 'contents' });
+
+      for (const key in styles) {
+        this.style[key] = null;
+      }
+    } else {
+      Array.from(this.#root.childNodes).forEach((n) => frag.append(n));
+      this.#root.parentNode.replaceChild(frag, this.#root);
+      this.#root = this;
+    }
+
+    this.#updateStyle();
   }
 }
 
