@@ -449,47 +449,51 @@ const theme = {
 
 const sheet = new CSSStyleSheet();
 
-const generate = (size) => {
-  return /* css */ `
-    m-flex[space=${size}]:not([flex-dir*='column']):not([flex-direction*='column']) > *:not([hidden]):not(:first-child) {
-      margin-left: calc(var(--m-spacing-${size}) * calc(1 - 0));
-      margin-right: calc(var(--m-spacing-${size}) * 0);
-    }
+const generate = (size) => /* css */ `
+  m-flex[space=${size}]:not([flex-dir*='column']):not([flex-direction*='column']) > *:not([hidden]):not(:first-child) {
+    margin-left: calc(var(--m-spacing-${size}) * calc(1 - 0));
+    margin-right: calc(var(--m-spacing-${size}) * 0);
+  }
+  m-flex[space=${size}][flex-dir='horizontal-reverse'] > *:not([hidden]):not(:first-child),
+  m-flex[space=${size}][flex-direction='horizontal-reverse'] > *:not([hidden]):not(:first-child) {
+    margin-left: calc(var(--m-spacing-${size}) * calc(1 - 1));
+    margin-right: calc(var(--m-spacing-${size}) * 1);
+  }
+  m-flex[space=${size}][flex-dir='column'] > *:not([hidden]):not(:first-child),
+  m-flex[space=${size}][flex-direction='column'] > *:not([hidden]):not(:first-child) {
+    margin-top: calc(var(--m-spacing-${size}) * calc(1 - 0));
+    margin-bottom: calc(var(--m-spacing-${size}) * 0);
+  }
+  m-flex[space=${size}][flex-dir='column-reverse'] > *:not([hidden]):not(:first-child),
+  m-flex[space=${size}][flex-direction='column-reverse'] > *:not([hidden]):not(:first-child) {
+    margin-top: calc(var(--m-spacing-${size}) * calc(1 - 1));
+    margin-bottom: calc(var(--m-spacing-${size}) * 1);
+  }
+`;
 
-    m-flex[space=${size}][flex-dir='horizontal-reverse'] > *:not([hidden]):not(:first-child),
-    m-flex[space=${size}][flex-direction='horizontal-reverse']
-      > *:not([hidden]):not(:first-child) {
-      margin-left: calc(var(--m-spacing-${size}) * calc(1 - 1));
-      margin-right: calc(var(--m-spacing-${size}) * 1);
-    }
+const flexStyle = /* css */ `
+  m-flex { display: flex; }
+  m-flex[as] { display: contents; }
+  m-flex[hidden] { display: none; }
+  m-flex[as] > :first-child { display: flex; }
+`;
 
-    m-flex[space=${size}][flex-dir='column'] > *:not([hidden]):not(:first-child),
-    m-flex[space=${size}][flex-direction='column'] > *:not([hidden]):not(:first-child) {
-      margin-top: calc(var(--m-spacing-${size}) * calc(1 - 0));
-      margin-bottom: calc(var(--m-spacing-${size}) * 0);
-    }
-
-    m-flex[space=${size}][flex-dir='column-reverse'] > *:not([hidden]):not(:first-child),
-    m-flex[space=${size}][flex-direction='column-reverse']
-      > *:not([hidden]):not(:first-child) {
-      margin-top: calc(var(--m-spacing-${size}) * calc(1 - 1));
-      margin-bottom: calc(var(--m-spacing-${size}) * 1);
-    }
-  `;
-};
-
-sheet.replaceSync(values(Size).map(generate).join(''));
+sheet.replaceSync(values(Size).map(generate).concat(flexStyle).join(''));
 
 export class Flex extends HTMLElement {
   static get observedAttributes() {
-    return ['as', 'class', 'disabled', 'hidden', 'space'];
+    return ['as', 'class', 'disabled', 'hidden', 'space', 'style'];
   }
 
-  #observer = new MutationObserver((a) => {
-    this.#updateStyle(a.map((m) => m.attributeName));
-  });
-
   #root = this;
+
+  #observer = new MutationObserver((a) =>
+    this.#updateStyle(a.map((m) => m.attributeName)),
+  );
+
+  get as() {
+    return this.getAttribute('as');
+  }
 
   constructor() {
     super();
@@ -498,46 +502,21 @@ export class Flex extends HTMLElement {
   }
 
   connectedCallback() {
-    this.#updateStyle(this.getAttributeNames());
+    this.#updateStyle();
   }
 
-  attributeChangedCallback(key, _old, _val) {
-    switch (key) {
-      case 'as':
-        setTimeout(() => this.#updateRoot());
-        break;
+  attributeChangedCallback(key, _old, val) {
+    if (key === 'as') {
+      setTimeout(() => this.#updateRoot());
+    }
 
-      case 'hidden':
-        this.#updateStyle();
-        break;
+    if (['class', 'style'].includes(key) && this.as && val) {
+      setTimeout(() => this.#moveAttrs(this, this.#root));
     }
   }
 
   disconnectedCallback() {
     this.#observer?.disconnect();
-  }
-
-  /**
-   * Generates styles from component's attributes.
-   *
-   * @param {object} defaults
-   * @param {string[]} attrs
-   * @returns {object}
-   */
-  #styles(defaults = {}, attrs = this.getAttributeNames()) {
-    const { observedAttributes = [] } = this.constructor;
-    const blacklist = ['style'].concat(observedAttributes);
-
-    return attrs.reduce((style, name) => {
-      const value = this.#parse(name, this.getAttribute(name));
-      const invalid = blacklist.includes(name) || !whitelist.includes(name);
-
-      return (
-        (invalid && style) ||
-        (!keys(aliases).includes(name) && { ...style, [name]: value }) ||
-        aliases[name].reduce((r, k) => ({ ...r, [k]: value }), style)
-      );
-    }, defaults);
   }
 
   /**
@@ -557,15 +536,41 @@ export class Flex extends HTMLElement {
     return value;
   }
 
+  #moveAttrs(source, target) {
+    for (const k of source.style) {
+      target.style[k] = source.style[k];
+    }
+
+    let iter = source.classList.values();
+    let next = iter.next();
+
+    while (!next.done) {
+      target.classList.add(next.value);
+      next = iter.next();
+    }
+
+    source.removeAttribute('class');
+    source.removeAttribute('style');
+  }
+
   /**
-   * @param {string[]} attrs
+   * @param {string[]} [attrs]
    */
-  #updateStyle(attrs) {
-    Object.assign(
-      this.#root.style,
-      { display: this.hasAttribute('hidden') ? 'none' : 'flex' },
-      this.#styles({}, attrs),
-    );
+  #updateStyle(attrs = this.getAttributeNames()) {
+    const blacklist = this.constructor.observedAttributes || {};
+
+    const styles = attrs.reduce((style, name) => {
+      const value = this.#parse(name, this.getAttribute(name));
+      const invalid = blacklist.includes(name) || !whitelist.includes(name);
+
+      return (
+        (invalid && style) ||
+        (!keys(aliases).includes(name) && { ...style, [name]: value }) ||
+        aliases[name].reduce((r, k) => ({ ...r, [k]: value }), style)
+      );
+    }, {});
+
+    assign(this.#root.style, styles);
   }
 
   #updateRoot() {
@@ -573,23 +578,19 @@ export class Flex extends HTMLElement {
     const frag = document.createDocumentFragment();
 
     if (tag) {
-      if (this === this.#root) {
-        Array.from(this.childNodes).forEach((n) => frag.append(n));
-        this.#root = document.createElement(tag);
-        this.#root.append(frag);
-        this.appendChild(this.#root);
-      } else {
-        const root = document.createElement(tag);
+      const root = document.createElement(tag);
 
-        this.#root.parentNode.replaceChild(root, this.#root);
-      }
+      Array.from(this.#root.childNodes).forEach((n) => frag.append(n));
+      root.append(frag);
 
-      const styles = this.#styles({ display: 'contents' });
+      this === this.#root
+        ? this.appendChild(root)
+        : this.#root.parentNode.replaceChild(root, this.#root);
 
-      for (const key in styles) {
-        this.style[key] = null;
-      }
+      this.#root = root;
+      this.#moveAttrs(this, root);
     } else {
+      this.#moveAttrs(this.#root, this);
       Array.from(this.#root.childNodes).forEach((n) => frag.append(n));
       this.#root.parentNode.replaceChild(frag, this.#root);
       this.#root = this;
