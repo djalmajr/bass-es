@@ -528,7 +528,7 @@ export class Flex extends HTMLElement {
     this.#updateStyle();
   }
 
-  attributeChangedCallback(key, _old, val) {
+  attributeChangedCallback(key, _old, _val) {
     switch (key) {
       case 'as':
         setTimeout(() => this.#updateRoot());
