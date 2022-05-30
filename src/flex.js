@@ -1,5 +1,7 @@
 import { Size } from './constants.js';
 
+const { isArray } = Array;
+
 const { assign, keys, values } = Object;
 
 const colors = {
@@ -454,27 +456,33 @@ const addCSS = (css) => {
 };
 
 const generate = (size) => /* css */ `
-  m-flex[space=${size}]:not([flex-dir*='column']):not([flex-direction*='column']) > *:not([hidden]):not(:first-child),
-  m-flex[as][space=${size}]:not([flex-dir*='column']):not([flex-direction*='column']) > :first-child > *:not([hidden]):not(:first-child) {
+  m-flex[space=${size}]:not([column]):not([reverse]):not([flex-dir*='column']):not([flex-direction*='column']) > *:not([hidden]):not(:first-child),
+  m-flex[as][space=${size}]:not([column]):not([reverse]):not([flex-dir*='column']):not([flex-direction*='column']) > :first-child > *:not([hidden]):not(:first-child) {
     margin-left: calc(var(--m-spacing-${size}) * calc(1 - 0));
     margin-right: calc(var(--m-spacing-${size}) * 0);
   }
+  m-flex[space=${size}][reverse]:not([column]) > *:not([hidden]):not(:first-child),
   m-flex[space=${size}][flex-dir='horizontal-reverse'] > *:not([hidden]):not(:first-child),
   m-flex[space=${size}][flex-direction='horizontal-reverse'] > *:not([hidden]):not(:first-child),
+  m-flex[as][space=${size}][reverse]:not([column]) > :first-child > *:not([hidden]):not(:first-child),
   m-flex[as][space=${size}][flex-dir='horizontal-reverse'] > :first-child > *:not([hidden]):not(:first-child),
   m-flex[as][space=${size}][flex-direction='horizontal-reverse'] > :first-child > *:not([hidden]):not(:first-child) {
     margin-left: calc(var(--m-spacing-${size}) * calc(1 - 1));
     margin-right: calc(var(--m-spacing-${size}) * 1);
   }
+  m-flex[space=${size}][column]:not([reverse]) > *:not([hidden]):not(:first-child),
   m-flex[space=${size}][flex-dir='column'] > *:not([hidden]):not(:first-child),
   m-flex[space=${size}][flex-direction='column'] > *:not([hidden]):not(:first-child),
+  m-flex[as][space=${size}][column]:not([reverse]) > :first-child > *:not([hidden]):not(:first-child),
   m-flex[as][space=${size}][flex-dir='column'] > :first-child > *:not([hidden]):not(:first-child),
   m-flex[as][space=${size}][flex-direction='column'] > :first-child > *:not([hidden]):not(:first-child) {
     margin-top: calc(var(--m-spacing-${size}) * calc(1 - 0));
     margin-bottom: calc(var(--m-spacing-${size}) * 0);
   }
+  m-flex[space=${size}][column][reverse] > *:not([hidden]):not(:first-child),
   m-flex[space=${size}][flex-dir='column-reverse'] > *:not([hidden]):not(:first-child),
   m-flex[space=${size}][flex-direction='column-reverse'] > *:not([hidden]):not(:first-child),
+  m-flex[as][space=${size}][column][reverse] > :first-child > *:not([hidden]):not(:first-child),
   m-flex[as][space=${size}][flex-dir='column-reverse'] > :first-child > *:not([hidden]):not(:first-child),
   m-flex[as][space=${size}][flex-direction='column-reverse'] > :first-child > *:not([hidden]):not(:first-child) {
     margin-top: calc(var(--m-spacing-${size}) * calc(1 - 1));
@@ -487,6 +495,9 @@ const flexCss = /* css */ `
   m-flex[as] { display: contents; }
   m-flex[hidden] { display: none; }
   m-flex[as] > :first-child { display: flex; }
+  m-flex[column]:not([reverse]) { flex-direction: column; }
+  m-flex[column][reverse] { flex-direction: column-reverse; }
+  m-flex[reverse]:not([column]) { flex-direction: row-reverse; }
 `;
 
 const sheet = new CSSStyleSheet();
@@ -497,7 +508,7 @@ addCSS(sheet);
 
 export class Flex extends HTMLElement {
   static get observedAttributes() {
-    return ['as', 'class', 'disabled', 'hidden', 'space', 'style'];
+    return ['as', 'class', 'column', 'disabled', 'hidden', 'reverse', 'space', 'style'];
   }
 
   /** @type {HTMLElement} */
@@ -578,7 +589,7 @@ export class Flex extends HTMLElement {
     // Remaining attributes
     source
       .getAttributeNames()
-      .filter((key) => !allowed.includes(key) & !this.attrs.includes(key))
+      .filter((key) => !allowed.includes(key) && !this.attrs.includes(key))
       .forEach((key) => {
         target.setAttribute(key, source.getAttribute(key));
         source.removeAttribute(key);
@@ -588,28 +599,30 @@ export class Flex extends HTMLElement {
   #updateStyle() {
     const styles = this.getAttributeNames()
       .filter((key) => !this.attrs.includes(key) && allowed.includes(key))
-      .map((key) => {
+      .map((key, _, attrs) => {
+        const prop = aliases[key];
         const attr = this.getAttribute(key);
-        const val = this.#parse(key, attr);
+        const value = this.#parse(key, attr);
+        const reducer = (r, k) => r + `${k}:${value};`;
         const selector = this.as
           ? `m-flex[as][${key}="${attr}"] > :first-child`
           : `m-flex[${key}="${attr}"]`;
 
         return keys(aliases).includes(key)
-          ? `${selector} { ${aliases[key].reduce((r, k) => r + `${k}:${val};`, '')} }`
-          : `${selector} { ${key}:${val}; }`;
+          ? `${selector} { ${isArray(prop) ? prop.reduce(reducer, '') : prop(value, attrs)} }`
+          : `${selector} { ${key}:${value}; }`;
       });
 
     this.#style.replaceSync(styles.join(''));
   }
 
   #updateRoot() {
-    const root = document.createElement(this.as);
     const frag = document.createDocumentFragment();
 
     Array.from(this.#root.childNodes).forEach((n) => frag.append(n));
 
     if (this.as) {
+      const root = document.createElement(this.as);
       root.append(frag);
       if (this === this.#root) this.appendChild(root);
       else this.#root.parentNode.replaceChild(root, this.#root);

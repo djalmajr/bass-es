@@ -25,9 +25,7 @@ export class App extends Base {
 
   render() {
     return html`
-      <m-flex as="h1" font-weight="600" mb="large" color="red">
-        Counter: ${this.counter}
-      </m-flex>
+      <m-flex as="h1" font-weight="600" mb="large" color="red">Counter: ${this.counter}</m-flex>
       <m-flex space="medium" align="center">
         <m-button intent="primary" @click=${this.#toggle}>Toggle Modal</m-button>
         <m-button intent="primary" disabled>Disabled</m-button>
@@ -35,9 +33,9 @@ export class App extends Base {
       </m-flex>
       <m-dialog mask-closable ?opened=${this.opened} @close=${this.#toggle}>
         <strong slot="title">Save Info</strong>
-        <m-flex space="medium" flex-dir="column">
+        <m-flex column space="medium">
           <form>
-            <m-flex flex-dir="column" space="tiny">
+            <m-flex column space="tiny">
               <m-flex as="label" for="name" font-weight="600" mr="auto">Name</m-flex>
               <input id="name" name="name" />
             </m-flex>
