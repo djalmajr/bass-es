@@ -25,7 +25,7 @@ export class App extends Base {
 
   render() {
     return html`
-      <m-flex font-size="large" font-weight="600" mb="large">
+      <m-flex as="h1" font-weight="600" mb="large" color="red">
         Counter: ${this.counter}
       </m-flex>
       <m-flex space="medium" align="center">
@@ -37,9 +37,9 @@ export class App extends Base {
         <strong slot="title">Save Info</strong>
         <m-flex space="medium" flex-dir="column">
           <form>
-            <m-flex space="tiny" flex-dir="column" size="tiny">
-              <span>Name</span>
-              <input name="name" />
+            <m-flex flex-dir="column" space="tiny">
+              <m-flex as="label" for="name" font-weight="600" mr="auto">Name</m-flex>
+              <input id="name" name="name" />
             </m-flex>
           </form>
           <footer>
