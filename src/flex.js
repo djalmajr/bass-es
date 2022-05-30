@@ -536,7 +536,7 @@ export class Flex extends HTMLElement {
 
       case 'class':
       case 'style':
-        this.as && val && setTimeout(() => this.#moveAttrs(this, this.#root));
+        this.as && this.#moveAttrs(this, this.#root);
         break;
     }
   }
