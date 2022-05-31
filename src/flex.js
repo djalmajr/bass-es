@@ -491,13 +491,15 @@ const generate = (size) => /* css */ `
 `;
 
 const flexCss = /* css */ `
-  m-flex { display: flex; }
+  m-flex, m-flex[as] > :first-child { display: flex; }
   m-flex[as] { display: contents; }
   m-flex[hidden] { display: none; }
-  m-flex[as] > :first-child { display: flex; }
-  m-flex[column]:not([reverse]) { flex-direction: column; }
-  m-flex[column][reverse] { flex-direction: column-reverse; }
-  m-flex[reverse]:not([column]) { flex-direction: row-reverse; }
+  m-flex[column]:not([reverse]), m-flex[as][column]:not([reverse]) > :first-child { flex-direction: column; }
+  m-flex[column][reverse], m-flex[as][column][reverse] > :first-child { flex-direction: column-reverse; }
+  m-flex[reverse]:not([column]), m-flex[as][reverse]:not([column]) > :first-child { flex-direction: row-reverse; }
+  m-flex[reverse][wrap], m-flex[as][reverse][wrap] > :first-child { flex-wrap: wrap-reverse; }
+  m-flex[nowrap], m-flex[as][nowrap] > :first-child { flex-wrap: nowrap; }
+  m-flex[wrap], m-flex[as][wrap] > :first-child { flex-wrap: wrap; }
 `;
 
 const sheet = new CSSStyleSheet();
@@ -508,7 +510,18 @@ addCSS(sheet);
 
 export class Flex extends HTMLElement {
   static get observedAttributes() {
-    return ['as', 'class', 'column', 'disabled', 'hidden', 'reverse', 'space', 'style'];
+    return [
+      'as',
+      'class',
+      'column',
+      'disabled',
+      'hidden',
+      'nowrap',
+      'reverse',
+      'space',
+      'style',
+      'wrap',
+    ];
   }
 
   /** @type {HTMLElement} */

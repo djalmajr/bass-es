@@ -36,8 +36,10 @@ export class App extends Base {
         <m-flex column space="medium">
           <form>
             <m-flex column space="tiny">
-              <m-flex as="label" for="name" font-weight="600" mr="auto">Name</m-flex>
-              <input id="name" name="name" />
+              <m-flex column as="label" font-weight="600" mr="auto">
+                <span>Name</span>
+                <input name="name" />
+              </m-flex>
             </m-flex>
           </form>
           <footer>
