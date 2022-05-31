@@ -38,7 +38,7 @@ export class App extends Base {
             <m-flex column space="tiny">
               <m-flex column as="label" font-weight="600" mr="auto">
                 <span>Name</span>
-                <input name="name" />
+                <m-flex as="input" name="name"></m-flex>
               </m-flex>
             </m-flex>
           </form>

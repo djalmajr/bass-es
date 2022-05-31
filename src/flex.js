@@ -510,18 +510,7 @@ addCSS(sheet);
 
 export class Flex extends HTMLElement {
   static get observedAttributes() {
-    return [
-      'as',
-      'class',
-      'column',
-      'disabled',
-      'hidden',
-      'nowrap',
-      'reverse',
-      'space',
-      'style',
-      'wrap',
-    ];
+    return ['as', 'class', 'column', 'disabled', 'hidden', 'nowrap', 'reverse', 'space', 'style', 'wrap'];
   }
 
   /** @type {HTMLElement} */
@@ -556,11 +545,6 @@ export class Flex extends HTMLElement {
     switch (key) {
       case 'as':
         setTimeout(() => this.#updateRoot());
-        break;
-
-      case 'class':
-      case 'style':
-        this.as && this.#moveAttrs(this, this.#root);
         break;
     }
   }
@@ -617,9 +601,7 @@ export class Flex extends HTMLElement {
         const attr = this.getAttribute(key);
         const value = this.#parse(key, attr);
         const reducer = (r, k) => r + `${k}:${value};`;
-        const selector = this.as
-          ? `m-flex[as][${key}="${attr}"] > :first-child`
-          : `m-flex[${key}="${attr}"]`;
+        const selector = this.as ? `m-flex[as][${key}="${attr}"] > :first-child` : `m-flex[${key}="${attr}"]`;
 
         return keys(aliases).includes(key)
           ? `${selector} { ${isArray(prop) ? prop.reduce(reducer, '') : prop(value, attrs)} }`
@@ -627,6 +609,7 @@ export class Flex extends HTMLElement {
       });
 
     this.#style.replaceSync(styles.join(''));
+    this.as && setTimeout(() => this.#moveAttrs(this, this.#root));
   }
 
   #updateRoot() {

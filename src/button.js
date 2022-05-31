@@ -20,20 +20,19 @@ export class Button extends Base {
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('click', this);
+    this.addEventListener('click', this, true);
     this.#button = this.$('button');
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener('click', this);
+    this.removeEventListener('click', this, true);
   }
 
   /**
    * @param {MouseEvent} evt
    */
   handleEvent(evt) {
-    evt.stopPropagation();
     this.#button.focus();
 
     if (this.disabled || this.loading) {
