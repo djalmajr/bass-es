@@ -25,7 +25,7 @@ export class App extends Base {
 
   render() {
     return html`
-      <m-flex as="h1" font-weight="600" mb="large" color="red">Counter: ${this.counter}</m-flex>
+      <m-flex as="h1" color="red" font-weight="600" mb="large" mt="0">Counter: ${this.counter}</m-flex>
       <m-flex space="medium" align="center">
         <m-button intent="primary" @click=${this.#toggle}>Toggle Modal</m-button>
         <m-button intent="primary" disabled>Disabled</m-button>
