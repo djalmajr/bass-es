@@ -146,7 +146,7 @@ export class Button extends styled(Base) {
 
     return html`
       <button .disabled=${disabled}>
-        <m-spinner .hidden=${!loading} style="--m-size: 0.8em" />
+        <m-spinner .hidden=${!loading}></m-spinner>
         <m-flex .hidden=${loading} line-height="inherit"><slot /></m-flex>
       </button>
     `;

@@ -34,7 +34,7 @@ export class Dialog extends Base {
     };
 
     return html`
-      <div class="overlay" @click=${this.#handleMaskClick} />
+      <div class="overlay" @click=${this.#handleMaskClick}></div>
       <div class="container" style=${styleMap(style)}>
         <header>
           <div class="title">

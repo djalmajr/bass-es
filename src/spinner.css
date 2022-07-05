@@ -1,6 +1,6 @@
 m-spinner {
-  --m-size: var(--m-spinner-size, 1.25rem);
-  --m-border: calc(var(--m-size) * 0.1);
+  --m-size: var(--m-spinner-size, 1em);
+  --m-border: calc(var(--m-size) * 0.15);
 }
 
 m-spinner {
