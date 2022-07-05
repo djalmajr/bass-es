@@ -1,6 +1,6 @@
 m-spinner {
-  --m-border-width: var(--m-spinner-border-width, 3px);
   --m-size: var(--m-spinner-size, 1.25rem);
+  --m-border: calc(var(--m-size) * 0.1);
 }
 
 m-spinner {
@@ -32,37 +32,32 @@ m-spinner .spinner:before {
 
 m-spinner .spinner:after {
   animation: spinner 0.6s linear infinite;
-  border: var(--m-border-width) solid transparent;
+  border: var(--m-border) solid transparent;
   border-top-color: inherit;
 }
 
 m-spinner .spinner:before {
-  border: var(--m-border-width) solid inherit;
+  border: var(--m-border) solid inherit;
   opacity: 0.1;
 }
 
 m-spinner[size='tiny'] {
-  --m-border-width: 2px;
   --m-size: 0.75rem;
 }
 
 m-spinner[size='mini'] {
-  --m-border-width: 2px;
   --m-size: 0.85rem;
 }
 
 m-spinner[size='small'] {
-  --m-border-width: 2px;
   --m-size: 1rem;
 }
 
 m-spinner[size='large'] {
-  --m-border-width: 3px;
   --m-size: 1.75rem;
 }
 
 m-spinner[size='big'] {
-  --m-border-width: 4px;
   --m-size: 2.5rem;
 }
 

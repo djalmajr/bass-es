@@ -17,6 +17,8 @@ export { html, render };
 export class Base extends HTMLElement {
   static shadowDOM = false;
 
+  #mounted = false;
+
   #props = {};
 
   constructor() {
@@ -35,6 +37,8 @@ export class Base extends HTMLElement {
   }
 
   connectedCallback() {
+    super.connectedCallback?.();
+
     if (isObject(this.props)) {
       this.#props = reactive(this.props, this.#render);
 
@@ -58,20 +62,25 @@ export class Base extends HTMLElement {
       }
     }
 
+    this.#mounted = true;
     this.#render();
   }
 
-  disconnectedCallback() {}
+  disconnectedCallback() {
+    super.disconnectedCallback?.();
+  }
 
   attributeChangedCallback(key, old, val) {
-    if (!this.isConnected) {
-      setTimeout(() => this.attributeChangedCallback(key, old, val));
+    super.attributeChangedCallback?.(key, old, val);
+
+    if (!this.#mounted) {
+      queueMicrotask(() => this.attributeChangedCallback(key, old, val));
       return;
     }
 
     const prop = camelCase(key);
 
-    if (this.props?.[prop] !== undefined) {
+    if (this.hasOwnProperty(prop)) {
       this[prop] = parse.attr(val);
     }
 
@@ -135,7 +144,7 @@ export class Base extends HTMLElement {
   /**
    *
    * @param {string} name
-   * @param {(this: HTMLElement, evt: any) => any} listener
+   * @param {EventListenerOrEventListenerObject} listener
    * @param {boolean | AddEventListenerOptions} [options]
    */
   on(name, listener, options) {
@@ -145,7 +154,7 @@ export class Base extends HTMLElement {
   /**
    *
    * @param {string} name
-   * @param {(this: HTMLElement, evt: any) => any} listener
+   * @param {EventListenerOrEventListenerObject} listener
    * @param {boolean | AddEventListenerOptions} [options]
    */
   off(name, listener, options) {
