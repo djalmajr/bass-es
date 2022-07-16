@@ -11,10 +11,17 @@ export class App extends Base {
     const intents = ['default', 'primary', 'success', 'danger', 'info', 'warning'];
 
     return html`
-      <m-flex column space="large">
+      <m-flex column>
         ${sizes.map((size) => {
           return html`
-            <m-flex font-size="huge" text-transform="capitalize">${size}</m-flex>
+            <m-flex
+              font-size="big"
+              margin-top="large"
+              margin-bottom="medium"
+              text-transform="capitalize"
+            >
+              ${size}
+            </m-flex>
             <m-flex wrap space="large">
               ${intents.map((intent) => {
                 return html`

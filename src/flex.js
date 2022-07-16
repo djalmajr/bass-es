@@ -1,8 +1,9 @@
+import { define } from './base.js';
 import styled from './styled.js';
 
 export class Flex extends styled(HTMLElement, { ghost: false }) {
   /**
-   * @type {HTMLElement}
+   * @type {Flex | HTMLElement}
    */
   #root = this;
 
@@ -65,4 +66,4 @@ export class Flex extends styled(HTMLElement, { ghost: false }) {
   }
 }
 
-customElements.define('m-flex', Flex);
+define('m-flex', Flex);

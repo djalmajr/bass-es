@@ -71,10 +71,18 @@ const aliases = assign({}, colors, flex, layout, position, spaces);
 
 const sheet = new CSSStyleSheet();
 
+/**
+ * @param {string} attr
+ * @return {string[]}
+ */
 const split = (attr) => {
   return attr.split(/-(active|focus|hover|first|last)$/).filter(Boolean);
 };
 
+/**
+ * @param {CSSStyleSheet} stylesheet
+ * @return {string}
+ */
 const stringify = (stylesheet) => {
   return Array.from(stylesheet.cssRules)
     .map((rule) => rule.cssText || '')
@@ -82,12 +90,9 @@ const stringify = (stylesheet) => {
 };
 
 /**
- *
- * @param {*} Base
- * @param {*} [config]
- * @returns
+ * @type {import('./styled').StyledMixin}
  */
-export default function (Base, config) {
+export default function StyledMixin(Base, config) {
   const { ghost = true } = config || {};
 
   return class Styled extends Base {
@@ -106,7 +111,7 @@ export default function (Base, config) {
         'wrap',
       ];
 
-      return uniq(attrs.concat(Base.observedAttributes || []));
+      return uniq(attrs.concat(this.constructor.observedAttributes || []));
     }
 
     /**
@@ -154,7 +159,7 @@ export default function (Base, config) {
     }
 
     #init() {
-      let parent = this.parentNode;
+      let parent = /** @type {any} */ (this.parentNode);
 
       while (![Node.DOCUMENT_FRAGMENT_NODE, Node.DOCUMENT_NODE].includes(parent.nodeType)) {
         parent = parent.parentNode || document;

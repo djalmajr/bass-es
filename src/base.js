@@ -8,11 +8,33 @@ import createReactive from './reactive.js';
 const reactive = createReactive();
 
 const parse = {
-  attr: (val) => val === '' || parseJSON(val),
-  prop: (val) => (typeof val === 'boolean' ? (val ? '' : null) : val),
+  /**
+   * @param {string} val
+   * @return {unknown}
+   */
+  attr(val) {
+    return val === '' || parseJSON(val);
+  },
+
+  /**
+   * @param {unknown} val
+   * @return {unknown}
+   */
+  prop(val) {
+    return typeof val === 'boolean' ? (val ? '' : null) : val;
+  },
 };
 
-export { html, render };
+/**
+ * @type {CustomElementRegistry['define']}
+ */
+const define = (tag, ctor, options) => {
+  if (!customElements.get(tag)) {
+    customElements.define(tag, ctor, options);
+  }
+};
+
+export { define, html, render };
 
 export class Base extends HTMLElement {
   static shadowDOM = false;
@@ -20,6 +42,11 @@ export class Base extends HTMLElement {
   #mounted = false;
 
   #props = {};
+
+  /**
+   * @type {Map<string, Node[]>}
+   */
+  #slots = new Map();
 
   constructor() {
     super();
@@ -89,6 +116,9 @@ export class Base extends HTMLElement {
 
   // DOM
 
+  /**
+   * @return {ShadowRoot | HTMLElement}
+   */
   get $el() {
     return this.shadowRoot || this;
   }
@@ -179,14 +209,17 @@ export class Base extends HTMLElement {
         return;
       }
 
-      const slot = {};
+      if (!this.#slots.size) {
+        Array.from(root.childNodes).forEach((node) => {
+          const name = node.getAttribute?.('slot') || 'default';
 
-      Array.from(root.childNodes).forEach((node) => {
-        const name = node.getAttribute?.('slot') || 'default';
+          if (!this.#slots.has(name)) {
+            this.#slots.set(name, []);
+          }
 
-        slot[name] ||= [];
-        slot[name].push(node);
-      });
+          this.#slots.get(name).push(node);
+        });
+      }
 
       const wrap = document.createElement('div');
 
@@ -196,7 +229,7 @@ export class Base extends HTMLElement {
         const frag = document.createDocumentFragment();
         const name = node.getAttribute('name') || 'default';
 
-        frag.append(...slot[name]);
+        frag.append(...this.#slots.get(name));
         node.parentNode.replaceChild(frag, node);
       });
 

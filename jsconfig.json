@@ -1,8 +1,10 @@
 {
-  "include": ["src"],
+  "exclude": ["lib", "node_modules"],
   "compilerOptions": {
+    "checkJs": true,
     "lib": ["dom", "esnext"],
     "module": "esnext",
+    "moduleResolution": "node",
     "target": "es2020"
   }
 }

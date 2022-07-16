@@ -1,4 +1,4 @@
-import { Base, html } from './base.js';
+import { Base, define, html } from './base.js';
 import { Size } from './constants.js';
 import styled from './styled.js';
 
@@ -153,4 +153,4 @@ export class Button extends styled(Base) {
   }
 }
 
-customElements.define('m-button', Button);
+define('m-button', Button);
