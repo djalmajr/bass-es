@@ -7,6 +7,11 @@ import createReactive from './reactive.js';
 
 const reactive = createReactive();
 
+/**
+ * @type {Map<string, Record<string, Node[]>>}
+ */
+const slots = new Map();
+
 const parse = {
   /**
    * @param {string} val
@@ -43,10 +48,11 @@ export class Base extends HTMLElement {
 
   #props = {};
 
-  /**
-   * @type {Map<string, Node[]>}
-   */
-  #slots = new Map();
+  get dataID() {
+    return this.getAttributeNames()
+      .find((n) => n.match(/^data-\w{4}$/))
+      ?.split('-')[1];
+  }
 
   constructor() {
     super();
@@ -95,6 +101,7 @@ export class Base extends HTMLElement {
 
   disconnectedCallback() {
     super.disconnectedCallback?.();
+    slots.delete(this.dataID);
   }
 
   attributeChangedCallback(key, old, val) {
@@ -209,31 +216,35 @@ export class Base extends HTMLElement {
         return;
       }
 
-      if (!this.#slots.size) {
+      if (!this.dataID) {
+        const id = crypto.randomUUID().split('-')[1];
+
         Array.from(root.childNodes).forEach((node) => {
           const name = node.getAttribute?.('slot') || 'default';
 
-          if (!this.#slots.has(name)) {
-            this.#slots.set(name, []);
-          }
-
-          this.#slots.get(name).push(node);
+          slots.set(id, {});
+          slots.get(id)[name] ||= [];
+          slots.get(id)[name].push(node);
         });
+
+        this.attr(`data-${id}`, '');
       }
 
-      const wrap = document.createElement('div');
+      if (slots.has(this.dataID)) {
+        const wrap = document.createElement('div');
 
-      wrap.appendChild(wire.valueOf());
+        wrap.appendChild(wire.valueOf());
 
-      wrap.querySelectorAll('slot').forEach((node) => {
-        const frag = document.createDocumentFragment();
-        const name = node.getAttribute('name') || 'default';
+        wrap.querySelectorAll('slot').forEach((node) => {
+          const frag = document.createDocumentFragment();
+          const name = node.getAttribute('name') || 'default';
 
-        frag.append(...this.#slots.get(name));
-        node.parentNode.replaceChild(frag, node);
-      });
+          frag.append(...slots.get(this.dataID)[name]);
+          node.parentNode.replaceChild(frag, node);
+        });
 
-      root.replaceChildren(...wrap.childNodes);
+        root.replaceChildren(...wrap.childNodes);
+      }
     }
   };
 }
